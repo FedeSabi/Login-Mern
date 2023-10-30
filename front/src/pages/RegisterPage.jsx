@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link  } from "react-router-dom";
 
 function RegisterPage() {
   const {
@@ -9,11 +9,11 @@ function RegisterPage() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { signUp, isAuthenticated } = useAuth();
+  const { signUp, isAuthenticated, errors: registerErrors } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuthenticated) navigate("/login"); //se puso login para que se redireccione a algun lado pero hay que cambiarlo, en el tutorial lo envia a task porque es un task list
+    if (isAuthenticated) navigate("/"); //se puso '/' para que se redireccione a algun lado pero hay que cambiarlo, en el tutorial lo envia a task porque es un task list
   }, [isAuthenticated]);
 
   const onSubmit = async (values) => {
@@ -23,6 +23,13 @@ function RegisterPage() {
 
   return (
     <div className="bg-zinc-800 max-w-md p-10 rounded-md">
+      {
+        registerErrors.map((error, i) => (
+          <div className="bg-red-500 p-2 text-white" key={i}>
+            {error}
+          </div>
+        ))
+      }
       <form onSubmit={handleSubmit(onSubmit)}>
         <input
           type="text"
@@ -53,6 +60,11 @@ function RegisterPage() {
         )}
         <button type="submit">Register</button>
       </form>
+
+      <p className="flex gap-x-2 justify-between">
+          Already have an account? <Link to="/login" className="text-sky-500">Login</Link>
+        </p>
+
     </div>
   );
 }
