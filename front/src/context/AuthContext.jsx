@@ -1,6 +1,7 @@
 //guardamos los datos de autenticacion del usuario
 import { createContext, useState, useContext, useEffect } from "react";
 import { registerRequest, loginRequest } from "../api/auth";
+import Cookies from 'js-cookie'
 
 export const AuthContext = createContext();
 
@@ -12,10 +13,10 @@ export const useAuth = () => {
   return context;
 };
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [errors, setErrors] = useState([])
+  const [errors, setErrors] = useState([]);
 
   const signUp = async (user) => {
     try {
@@ -25,30 +26,39 @@ export const AuthProvider = ({children}) => {
       setIsAuthenticated(true);
     } catch (error) {
       console.log(error.response);
-      setErrors(error.response.data)
+      setErrors(error.response.data);
     }
   };
-// llamamos a login
-  const signin = async (user) =>{
+  // llamamos a login
+  const signin = async (user) => {
     try {
-const res = await loginRequest(user)
-console.log(res)
-  } catch (error){
-   if (Array.isArray(error.response.data)) {
-    return setErrors(error.response.data)
-   }
-   setErrors([error.response.data])
-}
-}
-useEffect(()=>{
-if(errors.length > 0) {
-  const timer = setTimeout(() => {
-    setErrors([])
-  }, 5000)
-  return () => clearTimeout(timer)
-}
-}, [errors])
+      const res = await loginRequest(user);
+      console.log(res);
+      setIsAuthenticated(true);
+      setUser(res.data);
+    } catch (error) {
+      if (Array.isArray(error.response.data)) {
+        return setErrors(error.response.data);
+      }
+      setErrors([error.response.data]);
+    }
+  };
+  useEffect(() => {
+    if (errors.length > 0) {
+      const timer = setTimeout(() => {
+        setErrors([]);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errors]);
 
+  useEffect(() =>{
+const cookies = Cookies.get()
+
+if(cookies.token){
+  console.log(cookies.token)
+}
+  }, [])
 
   return (
     <AuthContext.Provider

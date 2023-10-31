@@ -8,6 +8,7 @@ const app = express()
 
 app.use(cors({
     origin: 'http://localhost:5173', //con origin le decimos que solo se puede conectar el localhost 5173!!
+    credentials: true
 }))
 app.use(morgan('dev'))
 app.use(express.json())
