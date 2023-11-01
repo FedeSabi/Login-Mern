@@ -11,7 +11,6 @@ const App = () => {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-
           {/*Public Pages sin logiarse */}
           <Route path="/" element={<HomePage/>} />
           <Route path="/login" element={<LoginPage />} />
