@@ -17,8 +17,13 @@ const App = () => {
           <Route path="/register" element={<RegisterPage />} />
 
            {/*Login Pages acceso solo con logeo */}
-          <Route element={<ProtectedRoute />}> 
+          <Route element={<ProtectedRoute />}>
+            <Route path="/alumno" element={<h1>alumno page</h1>} />
+            <Route path="/add-alumno" element={<h1>new alumno</h1>} />
+            <Route path="/alumno/:id" element={<h1>update alumno</h1>} />
             <Route path="/profile" element={<ProfilePage />} />
+            
+    
           </Route>
         </Routes>
       </BrowserRouter>
