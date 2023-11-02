@@ -14,7 +14,7 @@ const AlumnoSchema = new mongoose.Schema ({
         required: true,
     },
     nacimiento:{
-        type: Date,
+        type: String,
         required: true,
     }, 
     nivel:{
@@ -29,6 +29,11 @@ const AlumnoSchema = new mongoose.Schema ({
         type: String,
         required: true,
     },
+    user:{ //con el login realizado, los datos ingresados le pertenecen a ese usuario!!!!
+       type: mongoose.Schema.Types.ObjectId,
+       ref: 'User',
+       required: true
+    }
 })
 
 export default mongoose.model('Alumno', AlumnoSchema)
