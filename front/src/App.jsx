@@ -1,35 +1,34 @@
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import RegisterPage from "./pages/RegisterPage";
+import RegisterPage from './pages/RegisterPage'
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import { AuthProvider } from "./context/AuthContext";
 import ProfilePage from "./pages/ProfilePage";
 import ProtectedRoute from "./ProtectedRoute";
+import AlumnoPage from "./pages/AlumnoPage";
+import AlumnoFormPage from "./pages/AlumnoFormPage";
 
 const App = () => {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/*Public Pages sin logiarse */}
-          <Route path="/" element={<HomePage/>} />
-          <Route path="/login" element={<LoginPage />} />
+          {/* Páginas públicas sin iniciar sesión */}
+        <Route path="/" element={<HomePage />} />
+         <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-
-           {/*Login Pages acceso solo con logeo */}
+          {/* Utiliza ProtectedRoute como un componente de ruta anidado */}
           <Route element={<ProtectedRoute />}>
-            <Route path="/alumno" element={<h1>alumno page</h1>} />
-            <Route path="/add-alumno" element={<h1>new alumno</h1>} />
-            <Route path="/alumno/:id" element={<h1>update alumno</h1>} />
+            <Route path="/alumno" element={<AlumnoPage />} />
+            <Route path="/add-alumno" element={<AlumnoFormPage />} />
+            <Route path="/alumno/:id" element={<AlumnoFormPage />} />
             <Route path="/profile" element={<ProfilePage />} />
-            
-    
           </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>
   );
 };
-
 
 export default App;

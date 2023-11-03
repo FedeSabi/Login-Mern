@@ -1,4 +1,5 @@
 //guardamos los datos de autenticacion del usuario
+
 import { createContext, useState, useContext, useEffect } from "react";
 import { registerRequest, loginRequest, verityTokenRequet } from "../api/auth";
 import Cookies from "js-cookie";
@@ -20,7 +21,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   console.log(loading, isAuthenticated)
 
-  const signUp = async (user) => {
+  const signup = async (user) => {
     try {
       const res = await registerRequest(user);
       console.log(res.data);
@@ -60,6 +61,7 @@ useEffect(() =>{
 
     if(!cookies.token){
       setIsAuthenticated(false)
+       setLoading(false)
       return setUser(null)
     }
 
@@ -70,8 +72,6 @@ useEffect(() =>{
         setLoading(false)
         return
       } 
-      
-
       setIsAuthenticated(true)
       setUser(res.data)
       setLoading(false)
@@ -88,7 +88,7 @@ useEffect(() =>{
   return (
     <AuthContext.Provider
       value={{
-        signUp,
+        signup,
         signin,
         loading,
         user,
@@ -100,3 +100,5 @@ useEffect(() =>{
     </AuthContext.Provider>
   );
 };
+
+
