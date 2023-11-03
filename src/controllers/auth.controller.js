@@ -39,7 +39,43 @@ export const register = async (req, res) => {
   }
 };
 
-// login
+// login con administrador
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+      const userFound = await User.findOne({ email });
+      if (!userFound) return res.status(400).json({ message: "User not found" });
+
+      const isMatch = await bcrypt.compare(password, userFound.password);
+
+      if (!isMatch) return res.status(400).json({ message: "Incorrect password" });
+
+      // Verificar si el usuario es un administrador
+      let isAdmin = false; // Por defecto, el usuario no es un administrador
+
+      // Si el usuario tiene un campo 'isAdmin' en la base de datos, verifica su valor
+      if (userFound.isAdmin) {
+          isAdmin = userFound.isAdmin;
+      }
+
+      const token = await createAccessToken({ id: userFound._id });
+
+      res.cookie("token", token);
+      res.json({
+          id: userFound._id,
+          username: userFound.username,
+          email: userFound.email,
+          isAdmin, // Agregar isAdmin en la respuesta
+          createdAt: userFound.createdAt,
+          updatedAt: userFound.updatedAt,
+      });
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+};
+
+/*
 export const login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -64,7 +100,8 @@ export const login = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+}; */
+
 // logout
 export const logout = (req, res) => {
   res.cookie("token", "", {
@@ -105,3 +142,4 @@ jwt.verify(token, TOKEN_SECRET, async (err, user) =>{
   })
 })
 }
+
