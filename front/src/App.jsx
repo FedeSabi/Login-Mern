@@ -19,7 +19,7 @@ const App = () => {
          <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           {/* Utiliza ProtectedRoute como un componente de ruta anidado */}
-          <Route element={<ProtectedRoute />}>
+          <Route element={<ProtectedRoute />}> {/* ingresa atraves de <outlet /> */}
             <Route path="/alumno" element={<AlumnoPage />} />
             <Route path="/add-alumno" element={<AlumnoFormPage />} />
             <Route path="/alumno/:id" element={<AlumnoFormPage />} />
